@@ -8,7 +8,7 @@ const features = [
 
 export default function Features() {
     return (
-        <section className="section-light" style={{ padding: "100px 0" }}>
+        <section className="section-light" style={{ position: "relative", zIndex: 1, background: "#f8f8f8", padding: "100px 0" }}>
             <div className="container">
                 <p className="label fade-up" style={{ color: "rgba(0,0,0,0.4)", marginBottom: 16 }}>It starts with</p>
                 <h2 className="display-md fade-up" style={{ color: "#0a0a0a", marginBottom: 16, transitionDelay: "0.1s" }}>

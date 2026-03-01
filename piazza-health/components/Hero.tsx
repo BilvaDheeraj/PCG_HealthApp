@@ -6,7 +6,7 @@ export default function Hero() {
             minHeight: "100vh", position: "relative", display: "flex",
             flexDirection: "column", justifyContent: "center", alignItems: "center",
             overflow: "hidden", paddingTop: 100,
-            background: "radial-gradient(ellipse 100% 80% at 50% 100%, rgba(255,85,0,0.13) 0%, transparent 70%), radial-gradient(ellipse 60% 60% at 80% 20%, rgba(100,149,237,0.07) 0%, transparent 60%), #000",
+            background: "transparent",
         }}>
             <div className="dots-decoration" />
             <div style={{ position: "absolute", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(255,85,0,0.08) 0%, transparent 70%)", top: "10%", left: "60%", transform: "translate(-50%,-50%)", pointerEvents: "none", animation: "pulse 6s ease-in-out infinite" }} />
@@ -71,7 +71,7 @@ export default function Hero() {
                 <div style={{ width: 1, height: 48, background: "linear-gradient(to bottom, rgba(255,255,255,0.4), transparent)", animation: "scrollLine 2s ease-in-out infinite" }} />
             </div>
 
-            <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 200, background: "linear-gradient(to top, #000 0%, transparent 100%)", pointerEvents: "none" }} />
+            <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 200, background: "linear-gradient(to top, #000 0%, transparent 100%)", pointerEvents: "none", zIndex: 0 }} />
 
             <style>{`
         @keyframes pulse { 0%,100% { transform: scale(1); opacity: 0.7; } 50% { transform: scale(1.1); opacity: 1; } }

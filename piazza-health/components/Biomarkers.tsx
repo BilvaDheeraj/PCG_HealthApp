@@ -141,7 +141,7 @@ export default function Biomarkers() {
     const activeCategory = categories.find(c => c.id === active)!;
 
     return (
-        <section id="biomarkers" className="section-light" style={{ padding: "100px 0" }}>
+        <section id="biomarkers" className="section-light" style={{ position: "relative", zIndex: 1, background: "#fff", padding: "100px 0" }}>
             <div className="container">
                 <div style={{ textAlign: "center", marginBottom: 56 }}>
                     <p className="label fade-up" style={{ color: "#FF5500", fontWeight: 700, letterSpacing: "0.12em", marginBottom: 12 }}>What gets tested</p>

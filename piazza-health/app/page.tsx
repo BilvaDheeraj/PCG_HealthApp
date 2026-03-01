@@ -14,6 +14,8 @@ import Pricing from "@/components/Pricing";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
 
+import ScrollFrames from "@/components/ScrollFrames";
+
 export default function Home() {
   useEffect(() => {
     const initLenis = async () => {
@@ -34,16 +36,17 @@ export default function Home() {
   }, []);
 
   return (
-    <main>
+    <main style={{ position: "relative" }}>
+      <ScrollFrames />
       <Navbar />
       <Hero />
-      <Features />
+      <MedicalBoard />
       <Dashboard />
       <Stats />
       <HowItWorks />
       <Reviews />
       <Membership />
-      <MedicalBoard />
+      <Features />
       <Biomarkers />
       <Pricing />
       <FAQ />

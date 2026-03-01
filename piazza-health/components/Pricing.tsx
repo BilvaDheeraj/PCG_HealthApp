@@ -5,7 +5,7 @@ export default function Pricing() {
     const [annual, setAnnual] = useState(true);
 
     return (
-        <section id="pricing" style={{ background: "#f8f8f8", padding: "100px 0" }}>
+        <section id="pricing" style={{ position: "relative", zIndex: 1, background: "#f8f8f8", padding: "100px 0" }}>
             <div className="container" style={{ maxWidth: 900 }}>
                 <div style={{ textAlign: "center", marginBottom: 56 }}>
                     <p className="label fade-up" style={{ color: "rgba(0,0,0,0.4)", marginBottom: 12 }}>Membership pricing</p>

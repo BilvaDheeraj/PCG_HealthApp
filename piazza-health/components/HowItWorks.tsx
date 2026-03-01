@@ -26,7 +26,7 @@ const steps = [
 
 export default function HowItWorks() {
     return (
-        <section className="section-light" style={{ padding: "100px 0" }}>
+        <section className="section-light" style={{ position: "relative", zIndex: 1, background: "#fff", padding: "100px 0" }}>
             <div className="container">
                 <div style={{ textAlign: "center", marginBottom: 72 }}>
                     <p className="label fade-up" style={{ color: "rgba(0,0,0,0.4)", marginBottom: 12 }}>How it works</p>

@@ -14,7 +14,7 @@ export default function FAQ() {
     const [open, setOpen] = useState<number | null>(null);
 
     return (
-        <section id="faq" style={{ background: "#fff", padding: "100px 0" }}>
+        <section id="faq" style={{ position: "relative", zIndex: 1, background: "#fff", padding: "100px 0" }}>
             <div className="container" style={{ maxWidth: 760 }}>
                 <div style={{ textAlign: "center", marginBottom: 60 }}>
                     <p className="label fade-up" style={{ color: "rgba(0,0,0,0.4)", marginBottom: 12 }}>Frequently asked questions</p>

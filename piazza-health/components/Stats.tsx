@@ -36,7 +36,7 @@ const stats = [
 
 export default function Stats() {
     return (
-        <section style={{ background: "#111", padding: "120px 0" }}>
+        <section style={{ position: "relative", zIndex: 1, background: "#111", padding: "120px 0" }}>
             <div className="container">
                 <div style={{ textAlign: "center", marginBottom: 80 }}>
                     <p className="label fade-up" style={{ color: "rgba(255,255,255,0.4)", marginBottom: 12 }}>Data-driven results</p>

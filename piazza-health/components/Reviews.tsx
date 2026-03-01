@@ -10,7 +10,7 @@ const reviews = [
 
 export default function Reviews() {
     return (
-        <section id="reviews" style={{ background: "#0a0a0a", padding: "100px 0" }}>
+        <section id="reviews" style={{ position: "relative", zIndex: 1, background: "#0a0a0a", padding: "100px 0" }}>
             <div className="container">
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 48, flexWrap: "wrap", gap: 20 }}>
                     <div>

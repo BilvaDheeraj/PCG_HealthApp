@@ -9,7 +9,7 @@ const links = {
 
 export default function Footer() {
     return (
-        <footer style={{ background: "#000", color: "#fff", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+        <footer style={{ position: "relative", zIndex: 1, background: "#000", color: "#fff", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
             {/* Final CTA */}
             <div style={{
                 padding: "100px 0", textAlign: "center",
