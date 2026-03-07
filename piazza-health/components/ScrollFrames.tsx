@@ -39,9 +39,9 @@ export default function ScrollFrames() {
         if (!ctx) return;
 
         // Configuration
-        // Define scrollRange dynamically (end frames right before MedicalBoard section)
-        // Which spans just the Hero section (1 * window.innerHeight)
-        const getScrollRange = () => window.innerHeight * 1.0;
+        // Define scrollRange dynamically (end frames right before HowItWorks section)
+        // Which spans Hero + MedicalBoard + Dashboard + Stats (approx 4.2 * window.innerHeight)
+        const getScrollRange = () => window.innerHeight * 4.2;
 
         // Initial Draw
         const drawImage = (img: HTMLImageElement) => {

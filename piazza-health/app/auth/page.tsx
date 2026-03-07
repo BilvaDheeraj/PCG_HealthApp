@@ -1,187 +1,237 @@
 "use client";
-import { useState, useEffect } from "react";
+
+import { useState } from "react";
 import Link from "next/link";
+import { Activity, User, Building2, ShieldCheck, ArrowRight, Sparkles, Check } from "lucide-react";
 
-export default function AuthPage() {
-    const [isLogin, setIsLogin] = useState(true);
-    const [mounted, setMounted] = useState(false);
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [name, setName] = useState("");
+const roles = [
+    {
+        key: "user",
+        label: "Patient",
+        tagline: "Personal Health Portal",
+        href: "/auth/user",
+        icon: User,
+        colorPrimary: "#f97316",
+        colorSecondary: "#fbbf24",
+        glowColor: "rgba(249,115,22,0.25)",
+        borderActive: "rgba(249,115,22,0.5)",
+        bgIcon: "linear-gradient(135deg,#f97316,#fbbf24)",
+        bgGlow: "radial-gradient(circle at 50% 0%, rgba(249,115,22,0.12) 0%, transparent 65%)",
+        badge: "PERSONAL",
+        description: "Upload lab reports, get AI-powered insights, personalised diet plans, and track your biomarker trends over time.",
+        features: ["AI Report Analysis", "Diet Recommendations", "Biomarker Tracking", "24/7 Health Chat"],
+    },
+    {
+        key: "center",
+        label: "Diagnostic Center",
+        tagline: "B2B Lab Management",
+        href: "/auth/center",
+        icon: Building2,
+        colorPrimary: "#3b82f6",
+        colorSecondary: "#22d3ee",
+        glowColor: "rgba(59,130,246,0.25)",
+        borderActive: "rgba(59,130,246,0.5)",
+        bgIcon: "linear-gradient(135deg,#3b82f6,#22d3ee)",
+        bgGlow: "radial-gradient(circle at 50% 0%, rgba(59,130,246,0.12) 0%, transparent 65%)",
+        badge: "ENTERPRISE",
+        description: "Integrate your lab with HealthAI to auto-parse patient reports via API. Access analytics and batch upload tools.",
+        features: ["Batch Report Upload", "API Integration", "Center Analytics", "Patient Management"],
+    },
+    {
+        key: "admin",
+        label: "Admin",
+        tagline: "Platform Control Center",
+        href: "/auth/admin",
+        icon: ShieldCheck,
+        colorPrimary: "#a855f7",
+        colorSecondary: "#8b5cf6",
+        glowColor: "rgba(168,85,247,0.25)",
+        borderActive: "rgba(168,85,247,0.5)",
+        bgIcon: "linear-gradient(135deg,#a855f7,#8b5cf6)",
+        bgGlow: "radial-gradient(circle at 50% 0%, rgba(168,85,247,0.12) 0%, transparent 65%)",
+        badge: "RESTRICTED",
+        description: "Full platform control — manage centers, users, AI overrides, revenue analytics, and subscription controls.",
+        features: ["System Analytics", "AI Overrides", "User Management", "Revenue Control"],
+    },
+];
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!isLogin && password !== confirmPassword) {
-            alert("Passwords do not match!");
-            return;
-        }
-    };
-
-    useEffect(() => {
-        setMounted(true);
-    }, []);
-
-    if (!mounted) return null;
+export default function AuthGateway() {
+    const [hovered, setHovered] = useState<string | null>(null);
 
     return (
-        <div className="auth-wrapper" style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden", background: "#050505" }}>
-            {/* Animated Background Elements */}
-            <div className="bg-orb orb-1 fade-up" style={{ position: "absolute", top: "10%", left: "15%", width: "40vw", height: "40vw", background: "radial-gradient(circle, rgba(255,85,0,0.15) 0%, rgba(255,85,0,0) 70%)", borderRadius: "50%", filter: "blur(60px)", animation: "float 12s ease-in-out infinite" }} />
-            <div className="bg-orb orb-2 fade-up" style={{ position: "absolute", bottom: "10%", right: "15%", width: "50vw", height: "50vw", background: "radial-gradient(circle, rgba(255,100,20,0.1) 0%, rgba(200,50,0,0) 70%)", borderRadius: "50%", filter: "blur(80px)", animation: "float 15s ease-in-out infinite reverse", animationDelay: "2s" }} />
-            <div className="dot-grid" style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px)", backgroundSize: "32px 32px", opacity: 0.5, pointerEvents: "none" }} />
-
-            {/* Back Button */}
-            <Link href="/" className="back-btn fade-up" style={{ position: "absolute", top: 40, left: 40, display: "flex", alignItems: "center", gap: 8, color: "rgba(255,255,255,0.6)", textDecoration: "none", fontSize: 14, fontWeight: 500, transition: "color 0.2s, transform 0.2s", zIndex: 10 }}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg> Back to Home
-            </Link>
-
-            {/* Main Container */}
-            <div className="auth-container fade-up" style={{ position: "relative", zIndex: 10, width: "100%", maxWidth: 440, padding: 40 }}>
-
-                {/* Logo */}
-                <div style={{ textAlign: "center", marginBottom: 40 }}>
-                    <div style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 48, height: 48, background: "#FF5500", borderRadius: 12, marginBottom: 24, boxShadow: "0 8px 32px rgba(255,85,0,0.4)" }}>
-                        <span style={{ color: "#fff", fontWeight: 800, fontSize: 24, fontFamily: "var(--font-inter)" }}>P</span>
-                    </div>
-                    <h1 style={{ color: "#fff", fontSize: 32, fontWeight: 700, letterSpacing: "-0.03em", marginBottom: 8 }}>
-                        {isLogin ? "Welcome back" : "Create an account"}
-                    </h1>
-                    <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 15 }}>
-                        {isLogin ? "Enter your details to access your dashboard." : "Join the future of proactive health."}
-                    </p>
-                </div>
-
-                {/* Form Card */}
-                <div className="auth-card" style={{ background: "rgba(20,20,20,0.6)", backdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 24, padding: 32, boxShadow: "0 24px 64px rgba(0,0,0,0.4)" }}>
-
-                    <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-
-                        <div className={`input-group ${!isLogin ? "slide-down" : "hidden"}`} style={{ display: isLogin ? "none" : "block", position: "relative" }}>
-                            <label style={{ display: "block", color: "rgba(255,255,255,0.7)", fontSize: 13, fontWeight: 500, marginBottom: 8 }}>Full Name</label>
-                            <div style={{ position: "relative" }}>
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ position: "absolute", left: 16, top: "50%", transform: "translateY(-50%)", color: "rgba(255,255,255,0.4)" }}><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                                <input type="text" placeholder="John Doe" value={name} onChange={e => setName(e.target.value)}
-                                    style={{ width: "100%", background: "rgba(0,0,0,0.3)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 12, padding: "14px 16px 14px 44px", color: "#fff", fontSize: 15, outline: "none", transition: "border-color 0.2s" }}
-                                    onFocus={(e) => e.target.style.borderColor = "#FF5500"} onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
-                                />
-                            </div>
-                        </div>
-
-                        <div className="input-group" style={{ position: "relative" }}>
-                            <label style={{ display: "block", color: "rgba(255,255,255,0.7)", fontSize: 13, fontWeight: 500, marginBottom: 8 }}>Email Address</label>
-                            <div style={{ position: "relative" }}>
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ position: "absolute", left: 16, top: "50%", transform: "translateY(-50%)", color: "rgba(255,255,255,0.4)" }}><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                                <input type="email" placeholder="you@example.com" value={email} onChange={e => setEmail(e.target.value)}
-                                    style={{ width: "100%", background: "rgba(0,0,0,0.3)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 12, padding: "14px 16px 14px 44px", color: "#fff", fontSize: 15, outline: "none", transition: "border-color 0.2s" }}
-                                    onFocus={(e) => e.target.style.borderColor = "#FF5500"} onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
-                                />
-                            </div>
-                        </div>
-
-                        <div className="input-group" style={{ position: "relative" }}>
-                            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-                                <label style={{ color: "rgba(255,255,255,0.7)", fontSize: 13, fontWeight: 500 }}>Password</label>
-                                {isLogin && <a href="#" style={{ color: "#FF5500", fontSize: 12, textDecoration: "none", fontWeight: 500 }} className="hover-underline">Forgot?</a>}
-                            </div>
-                            <div style={{ position: "relative" }}>
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ position: "absolute", left: 16, top: "50%", transform: "translateY(-50%)", color: "rgba(255,255,255,0.4)" }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                                <input type="password" placeholder="••••••••" value={password} onChange={e => setPassword(e.target.value)}
-                                    style={{ width: "100%", background: "rgba(0,0,0,0.3)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 12, padding: "14px 16px 14px 44px", color: "#fff", fontSize: 15, outline: "none", transition: "border-color 0.2s" }}
-                                    onFocus={(e) => e.target.style.borderColor = "#FF5500"} onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
-                                />
-                            </div>
-                        </div>
-
-                        <div className={`input-group ${!isLogin ? "slide-down" : "hidden"}`} style={{ display: isLogin ? "none" : "block", position: "relative" }}>
-                            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-                                <label style={{ color: "rgba(255,255,255,0.7)", fontSize: 13, fontWeight: 500 }}>Confirm Password</label>
-                            </div>
-                            <div style={{ position: "relative" }}>
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ position: "absolute", left: 16, top: "50%", transform: "translateY(-50%)", color: "rgba(255,255,255,0.4)" }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                                <input type="password" placeholder="••••••••" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)}
-                                    style={{ width: "100%", background: "rgba(0,0,0,0.3)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 12, padding: "14px 16px 14px 44px", color: "#fff", fontSize: 15, outline: "none", transition: "border-color 0.2s" }}
-                                    onFocus={(e) => e.target.style.borderColor = !isLogin && confirmPassword && password !== confirmPassword ? "#ff4444" : "#FF5500"}
-                                    onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
-                                />
-                            </div>
-                            {!isLogin && confirmPassword && password !== confirmPassword && (
-                                <p style={{ color: "#ff4444", fontSize: 12, marginTop: 6 }}>Passwords do not match.</p>
-                            )}
-                        </div>
-
-                        <button type="submit" className="submit-btn" style={{ width: "100%", background: "#FF5500", color: "#fff", border: "none", borderRadius: 12, padding: "16px", fontSize: 15, fontWeight: 600, marginTop: 8, cursor: "pointer", position: "relative", overflow: "hidden", display: "flex", justifyContent: "center", alignItems: "center", gap: 8, transition: "transform 0.2s, background 0.2s" }}>
-                            {isLogin ? "Sign In" : "Create Account"}
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path><path d="M5 3v4"></path><path d="M19 17v4"></path><path d="M3 5h4"></path><path d="M17 19h4"></path></svg>
-                        </button>
-
-                    </form>
-
-                    <div style={{ display: "flex", alignItems: "center", gap: 16, margin: "24px 0" }}>
-                        <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.1)" }} />
-                        <span style={{ color: "rgba(255,255,255,0.4)", fontSize: 12, fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.1em" }}>Or continue with</span>
-                        <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.1)" }} />
-                    </div>
-
-                    <div style={{ display: "flex", gap: 12 }}>
-                        <button className="social-btn" style={{ flex: 1, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 12, padding: "12px", color: "#fff", display: "flex", justifyContent: "center", alignItems: "center", cursor: "pointer", transition: "background 0.2s" }}>
-                            <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" /><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" /><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" /><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" /><path d="M1 1h22v22H1z" fill="none" /></svg>
-                        </button>
-                        <button className="social-btn" style={{ flex: 1, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 12, padding: "12px", color: "#fff", display: "flex", justifyContent: "center", alignItems: "center", cursor: "pointer", transition: "background 0.2s" }}>
-                            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12c0-5.523-4.477-10-10-10z" /></svg>
-                        </button>
-                        <button className="social-btn" style={{ flex: 1, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 12, padding: "12px", color: "#fff", display: "flex", justifyContent: "center", alignItems: "center", cursor: "pointer", transition: "background 0.2s" }}>
-                            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12c0-5.523-4.477-10-10-10z" /></svg>
-                        </button>
-                    </div>
-
-                </div>
-
-                {/* Toggle Mode */}
-                <div style={{ textAlign: "center", marginTop: 24 }}>
-                    <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 14 }}>
-                        {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
-                        <button onClick={() => setIsLogin(!isLogin)} style={{ background: "none", border: "none", color: "#FF5500", fontWeight: 600, fontSize: 14, cursor: "pointer", padding: 0 }} className="hover-underline">
-                            {isLogin ? "Sign up" : "Log in"}
-                        </button>
-                    </p>
-                </div>
-
+        <div style={{
+            minHeight: "100vh", backgroundColor: "#050508",
+            display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+            padding: "48px 24px", fontFamily: "'Inter', sans-serif", position: "relative", overflow: "hidden"
+        }}>
+            {/* Ambient background glows */}
+            <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+                <div style={{ position: "absolute", top: "-15%", left: "5%", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(249,115,22,0.07) 0%, transparent 70%)", filter: "blur(40px)" }} />
+                <div style={{ position: "absolute", bottom: "-10%", right: "5%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(168,85,247,0.06) 0%, transparent 70%)", filter: "blur(50px)" }} />
+                <div style={{ position: "absolute", top: "40%", right: "30%", width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, rgba(59,130,246,0.05) 0%, transparent 70%)", filter: "blur(60px)" }} />
+                {/* Dot grid */}
+                <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px)", backgroundSize: "36px 36px", opacity: 0.8 }} />
             </div>
 
-            <style>{`
-        @keyframes float {
-          0% { transform: translate(0, 0) scale(1); }
-          33% { transform: translate(30px, -50px) scale(1.1); }
-          66% { transform: translate(-20px, 20px) scale(0.9); }
-          100% { transform: translate(0, 0) scale(1); }
-        }
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: none; }
-        }
-        .fade-up {
-          animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        .back-btn:hover {
-          color: #fff !important;
-          transform: translateX(-4px) !important;
-        }
-        .submit-btn:hover {
-          background: #e64d00 !important;
-          transform: scale(1.02) !important;
-        }
-        .social-btn:hover {
-          background: rgba(255,255,255,0.1) !important;
-        }
-        .hover-underline:hover { text-decoration: underline !important; }
-        .hidden { opacity: 0; pointer-events: none; position: absolute; }
-        .slide-down { animation: slideDown 0.3s ease forwards; }
-        @keyframes slideDown {
-          from { opacity: 0; transform: translateY(-10px); height: 0; margin-bottom: 0; }
-          to { opacity: 1; transform: none; height: 80px; margin-bottom: 20px; }
-        }
-      `}</style>
+            {/* Header */}
+            <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", alignItems: "center", marginBottom: 56 }}>
+                {/* Logo */}
+                <Link href="/" style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none", marginBottom: 28 }}>
+                    <div style={{ width: 52, height: 52, borderRadius: 16, background: "linear-gradient(135deg,#f97316,#fbbf24)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 12px 40px rgba(249,115,22,0.35)", transform: "rotate(-5deg)" }}>
+                        <Activity size={26} color="white" />
+                    </div>
+                    <span style={{ fontSize: 28, fontWeight: 900, color: "white", letterSpacing: "-1px" }}>HealthAI</span>
+                </Link>
+
+                {/* Badge */}
+                <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "7px 16px", borderRadius: 100, border: "1px solid rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.04)", marginBottom: 20 }}>
+                    <Sparkles size={12} color="#fbbf24" />
+                    <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)" }}>AI-Powered Health Intelligence Platform</span>
+                </div>
+
+                {/* Headline */}
+                <h1 style={{ fontSize: "clamp(36px, 6vw, 60px)", fontWeight: 900, color: "white", letterSpacing: "-2px", textAlign: "center", lineHeight: 1.05, marginBottom: 16 }}>
+                    Choose your portal
+                </h1>
+                <p style={{ fontSize: 17, color: "rgba(255,255,255,0.4)", textAlign: "center", maxWidth: 480, lineHeight: 1.65, margin: 0 }}>
+                    Select your account type to access the right portal for your needs. Your experience is tailored to your role.
+                </p>
+            </div>
+
+            {/* Role cards */}
+            <div style={{ position: "relative", zIndex: 1, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 340px))", gap: 20, width: "100%", maxWidth: 1060, justifyContent: "center" }}>
+                {roles.map((role) => {
+                    const isHov = hovered === role.key;
+                    return (
+                        <Link
+                            key={role.key}
+                            href={role.href}
+                            onMouseEnter={() => setHovered(role.key)}
+                            onMouseLeave={() => setHovered(null)}
+                            style={{
+                                textDecoration: "none",
+                                display: "flex", flexDirection: "column",
+                                borderRadius: 24,
+                                border: `1px solid ${isHov ? role.borderActive : "rgba(255,255,255,0.08)"}`,
+                                background: isHov ? `${role.bgGlow}, rgba(255,255,255,0.035)` : "rgba(255,255,255,0.025)",
+                                padding: "32px",
+                                position: "relative", overflow: "hidden",
+                                transform: isHov ? "translateY(-6px) scale(1.01)" : "translateY(0) scale(1)",
+                                transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                                boxShadow: isHov ? `0 24px 60px ${role.glowColor}, 0 0 0 1px ${role.borderActive}` : "0 4px 20px rgba(0,0,0,0.3)",
+                                cursor: "pointer",
+                            }}
+                        >
+                            {/* Inner glow on hover */}
+                            {isHov && (
+                                <div style={{ position: "absolute", inset: 0, background: role.bgGlow, pointerEvents: "none", borderRadius: 24 }} />
+                            )}
+
+                            {/* Top row: icon + badge */}
+                            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 24, position: "relative", zIndex: 1 }}>
+                                <div style={{
+                                    width: 56, height: 56, borderRadius: 18,
+                                    background: role.bgIcon,
+                                    display: "flex", alignItems: "center", justifyContent: "center",
+                                    boxShadow: isHov ? `0 8px 32px ${role.glowColor}` : "0 4px 16px rgba(0,0,0,0.4)",
+                                    transform: isHov ? "scale(1.08) rotate(-4deg)" : "scale(1) rotate(0deg)",
+                                    transition: "all 0.3s cubic-bezier(0.4,0,0.2,1)",
+                                    flexShrink: 0,
+                                }}>
+                                    <role.icon size={26} color="white" />
+                                </div>
+                                <span style={{
+                                    fontSize: 9, fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase",
+                                    padding: "5px 10px", borderRadius: 100,
+                                    border: `1px solid ${isHov ? role.borderActive : "rgba(255,255,255,0.1)"}`,
+                                    background: isHov ? `rgba(${role.colorPrimary === "#f97316" ? "249,115,22" : role.colorPrimary === "#3b82f6" ? "59,130,246" : "168,85,247"},0.12)` : "rgba(255,255,255,0.04)",
+                                    color: isHov ? role.colorPrimary : "rgba(255,255,255,0.35)",
+                                    transition: "all 0.25s",
+                                }}>
+                                    {role.badge}
+                                </span>
+                            </div>
+
+                            {/* Label + tagline */}
+                            <div style={{ marginBottom: 14, position: "relative", zIndex: 1 }}>
+                                <h2 style={{ fontSize: 22, fontWeight: 800, color: "white", letterSpacing: "-0.5px", marginBottom: 4 }}>{role.label}</h2>
+                                <p style={{ fontSize: 12, fontWeight: 600, color: isHov ? role.colorPrimary : "rgba(255,255,255,0.3)", textTransform: "uppercase", letterSpacing: "0.12em", transition: "color 0.25s" }}>{role.tagline}</p>
+                            </div>
+
+                            {/* Description */}
+                            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", lineHeight: 1.7, marginBottom: 22, position: "relative", zIndex: 1, flexGrow: 1 }}>
+                                {role.description}
+                            </p>
+
+                            {/* Feature list */}
+                            <ul style={{ listStyle: "none", padding: 0, margin: "0 0 28px 0", display: "flex", flexDirection: "column", gap: 9, position: "relative", zIndex: 1 }}>
+                                {role.features.map((f) => (
+                                    <li key={f} style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                                        <span style={{
+                                            width: 18, height: 18, borderRadius: "50%", flexShrink: 0,
+                                            background: isHov ? `rgba(${role.colorPrimary === "#f97316" ? "249,115,22" : role.colorPrimary === "#3b82f6" ? "59,130,246" : "168,85,247"},0.15)` : "rgba(255,255,255,0.07)",
+                                            display: "flex", alignItems: "center", justifyContent: "center",
+                                            transition: "background 0.25s",
+                                        }}>
+                                            <Check size={11} color={isHov ? role.colorPrimary : "rgba(255,255,255,0.3)"} strokeWidth={3} />
+                                        </span>
+                                        <span style={{ fontSize: 13, color: isHov ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.5)", transition: "color 0.25s" }}>{f}</span>
+                                    </li>
+                                ))}
+                            </ul>
+
+                            {/* CTA */}
+                            <div style={{
+                                display: "flex", alignItems: "center", justifyContent: "space-between",
+                                padding: "14px 18px", borderRadius: 14,
+                                background: isHov ? role.bgIcon : "rgba(255,255,255,0.05)",
+                                border: `1px solid ${isHov ? "transparent" : "rgba(255,255,255,0.08)"}`,
+                                transition: "all 0.3s cubic-bezier(0.4,0,0.2,1)",
+                                position: "relative", zIndex: 1,
+                            }}>
+                                <span style={{ fontSize: 13, fontWeight: 700, color: isHov ? "white" : "rgba(255,255,255,0.5)", transition: "color 0.25s" }}>
+                                    Enter as {role.label.split(" ")[0]}
+                                </span>
+                                <div style={{
+                                    width: 30, height: 30, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
+                                    background: isHov ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.07)",
+                                    transform: isHov ? "translateX(4px)" : "translateX(0)",
+                                    transition: "all 0.25s",
+                                }}>
+                                    <ArrowRight size={14} color={isHov ? "white" : "rgba(255,255,255,0.4)"} />
+                                </div>
+                            </div>
+                        </Link>
+                    );
+                })}
+            </div>
+
+            {/* Stats strip */}
+            <div style={{ position: "relative", zIndex: 1, display: "flex", gap: 40, marginTop: 52, justifyContent: "center", flexWrap: "wrap" }}>
+                {[
+                    { val: "12,000+", label: "Active Patients" },
+                    { val: "342+", label: "Partner Centers" },
+                    { val: "99.2%", label: "AI Accuracy" },
+                    { val: "HIPAA", label: "Compliant" },
+                ].map((s, i) => (
+                    <div key={i} style={{ textAlign: "center" }}>
+                        <div style={{ fontSize: 20, fontWeight: 800, color: "white", letterSpacing: "-0.5px" }}>{s.val}</div>
+                        <div style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", marginTop: 2, textTransform: "uppercase", letterSpacing: "0.08em" }}>{s.label}</div>
+                    </div>
+                ))}
+            </div>
+
+            {/* Footer */}
+            <div style={{ position: "relative", zIndex: 1, marginTop: 40, display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+                <div style={{ width: 280, height: 1, background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent)" }} />
+                <p style={{ fontSize: 11, color: "rgba(255,255,255,0.2)", letterSpacing: "0.05em" }}>
+                    <Link href="/legal/privacy" style={{ color: "inherit", textDecoration: "none" }}>Privacy Policy</Link>
+                    {" · "}
+                    <Link href="/legal/terms" style={{ color: "inherit", textDecoration: "none" }}>Terms of Service</Link>
+                    {" · "}
+                    End-to-end Encrypted · ISO 27001
+                </p>
+            </div>
         </div>
     );
 }

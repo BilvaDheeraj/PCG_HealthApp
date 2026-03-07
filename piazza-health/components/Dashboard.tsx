@@ -2,7 +2,7 @@
 
 export default function Dashboard() {
     return (
-        <section style={{ position: "relative", zIndex: 1, background: "#0a0a0a", padding: "100px 0", overflow: "hidden" }}>
+        <section style={{ position: "relative", zIndex: 1, background: "transparent", padding: "100px 0", overflow: "hidden" }}>
             <div className="container">
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center" }}>
                     <div>

@@ -10,7 +10,7 @@ const logos = ["AIIMS", "PGI", "CMC Vellore", "Tata Memorial", "Apollo", "Fortis
 
 export default function MedicalBoard() {
     return (
-        <section id="team" style={{ position: "relative", zIndex: 1, background: "#000", padding: "100px 0" }}>
+        <section id="team" style={{ position: "relative", zIndex: 1, background: "transparent", padding: "100px 0" }}>
             <div className="container">
                 {/* Scrolling logo ticker */}
                 <div style={{ overflow: "hidden", marginBottom: 80, position: "relative" }}>
