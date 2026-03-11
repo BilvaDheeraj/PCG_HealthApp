@@ -19,6 +19,14 @@ import ScrollFrames from "@/components/ScrollFrames";
 
 export default function Home() {
   useEffect(() => {
+    // Force scroll to top on refresh
+    if (typeof window !== 'undefined') {
+      if ('scrollRestoration' in window.history) {
+        window.history.scrollRestoration = 'manual';
+      }
+      window.scrollTo(0, 0);
+    }
+
     const initLenis = async () => {
       const Lenis = (await import("lenis")).default;
       const lenis = new Lenis({ duration: 1.4, easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
@@ -37,7 +45,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main style={{ position: "relative" }}>
+    <main style={{ position: "relative", background: "transparent" }}>
       <ScrollFrames />
       <Navbar />
       <Hero />

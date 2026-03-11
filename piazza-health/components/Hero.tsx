@@ -7,6 +7,7 @@ export default function Hero() {
             flexDirection: "column", justifyContent: "center", alignItems: "center",
             overflow: "hidden", paddingTop: 100,
             background: "transparent",
+            zIndex: 10,
         }}>
             <div className="dots-decoration" />
             <div style={{ position: "absolute", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(255,85,0,0.08) 0%, transparent 70%)", top: "10%", left: "60%", transform: "translate(-50%,-50%)", pointerEvents: "none", animation: "pulse 6s ease-in-out infinite" }} />
@@ -70,8 +71,6 @@ export default function Hero() {
                 <span style={{ textTransform: "uppercase" }}>Scroll</span>
                 <div style={{ width: 1, height: 48, background: "linear-gradient(to bottom, rgba(255,255,255,0.4), transparent)", animation: "scrollLine 2s ease-in-out infinite" }} />
             </div>
-
-            <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 200, background: "linear-gradient(to top, #000 0%, transparent 100%)", pointerEvents: "none", zIndex: 0 }} />
 
             <style>{`
         @keyframes pulse { 0%,100% { transform: scale(1); opacity: 0.7; } 50% { transform: scale(1.1); opacity: 1; } }

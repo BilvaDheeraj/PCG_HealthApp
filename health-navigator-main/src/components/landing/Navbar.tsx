@@ -3,18 +3,16 @@ import { Link } from "react-router-dom";
 
 const megaMenu = {
   product: [
-    { href: "#how-it-works", icon: "🔬", title: "How It Works", desc: "Get the most from your premium health membership" },
-    { href: "#biomarkers", icon: "🧬", title: "What We Test", desc: "100+ biomarkers in your annual test panel" },
-    { href: "#membership", icon: "🏢", title: "For Teams", desc: "All the benefits tailored to your organization" },
+    { href: "/how-it-works", icon: "🔬", title: "How It Works", desc: "Get the most from your premium health membership" },
+    { href: "/biomarkers", icon: "🧬", title: "What We Test", desc: "100+ biomarkers in your annual test panel" },
   ],
   learn: [
-    { href: "#reviews", icon: "⭐", title: "Reviews", desc: "What our members are saying" },
-    { href: "#pricing", icon: "🎁", title: "Pricing", desc: "Plans starting at ₹1,499/month" },
-    { href: "#faq", icon: "❓", title: "FAQs", desc: "Common questions answered" },
+    { href: "/reviews", icon: "⭐", title: "Reviews", desc: "What our members are saying" },
+    { href: "/faq", icon: "❓", title: "FAQs", desc: "Common questions answered" },
   ],
   legal: [
-    { href: "#", title: "Privacy Policy" },
-    { href: "#", title: "Terms & Conditions" },
+    { href: "/legal/privacy", title: "Privacy Policy" },
+    { href: "/legal/terms", title: "Terms & Conditions" },
   ],
 };
 
@@ -85,16 +83,14 @@ export default function Navbar() {
             className="nav-desktop"
           >
             {[
-              { label: "How It Works", href: "#how-it-works" },
-              { label: "What We Test", href: "#biomarkers" },
-              { label: "Reviews", href: "#reviews" },
-              { label: "Pricing", href: "#pricing" },
-              { label: "FAQs", href: "#faq" },
-              { label: "For Teams", href: "#membership" },
+              { label: "How It Works", href: "/how-it-works" },
+              { label: "What We Test", href: "/biomarkers" },
+              { label: "Reviews", href: "/reviews" },
+              { label: "FAQs", href: "/faq" },
             ].map((item) => (
-              <a
+              <Link
                 key={item.label}
-                href={item.href}
+                to={item.href}
                 style={{
                   color: "rgba(255,255,255,0.75)",
                   fontSize: 13.5,
@@ -115,7 +111,7 @@ export default function Navbar() {
                 }}
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
           </div>
 
@@ -181,25 +177,25 @@ export default function Navbar() {
               <div>
                 <p style={{ fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)", marginBottom: 16, fontWeight: 700 }}>Product</p>
                 {megaMenu.product.map((item) => (
-                  <a key={item.href} href={item.href} style={{ textDecoration: "none", display: "flex", gap: 12, padding: "10px 12px", borderRadius: 10, marginBottom: 2, transition: "background 0.2s" }} onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.06)")} onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}>
+                  <Link key={item.href} to={item.href} style={{ textDecoration: "none", display: "flex", gap: 12, padding: "10px 12px", borderRadius: 10, marginBottom: 2, transition: "background 0.2s" }} onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.06)")} onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}>
                     <span style={{ fontSize: 18, lineHeight: 1, marginTop: 2 }}>{item.icon}</span>
                     <div>
                       <div style={{ fontSize: 14, fontWeight: 600, color: "#fff", marginBottom: 2 }}>{item.title}</div>
                       <div style={{ fontSize: 12, color: "rgba(255,255,255,0.45)", lineHeight: 1.4 }}>{item.desc}</div>
                     </div>
-                  </a>
+                  </Link>
                 ))}
               </div>
               <div>
                 <p style={{ fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)", marginBottom: 16, fontWeight: 700 }}>Learn More</p>
                 {megaMenu.learn.map((item) => (
-                  <a key={item.href} href={item.href} style={{ textDecoration: "none", display: "flex", gap: 12, padding: "10px 12px", borderRadius: 10, marginBottom: 2, transition: "background 0.2s" }} onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.06)")} onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}>
+                  <Link key={item.href} to={item.href} style={{ textDecoration: "none", display: "flex", gap: 12, padding: "10px 12px", borderRadius: 10, marginBottom: 2, transition: "background 0.2s" }} onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.06)")} onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}>
                     <span style={{ fontSize: 18, lineHeight: 1, marginTop: 2 }}>{item.icon}</span>
                     <div>
                       <div style={{ fontSize: 14, fontWeight: 600, color: "#fff", marginBottom: 2 }}>{item.title}</div>
                       <div style={{ fontSize: 12, color: "rgba(255,255,255,0.45)", lineHeight: 1.4 }}>{item.desc}</div>
                     </div>
-                  </a>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -207,9 +203,9 @@ export default function Navbar() {
             <div>
               <p style={{ fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)", marginBottom: 16, fontWeight: 700 }}>Legal</p>
               {megaMenu.legal.map((item) => (
-                <a key={item.title} href={item.href} style={{ display: "block", fontSize: 13, color: "rgba(255,255,255,0.5)", textDecoration: "none", padding: "7px 0", transition: "color 0.2s" }} onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")} onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.5)")}>
+                <Link key={item.title} to={item.href} style={{ display: "block", fontSize: 13, color: "rgba(255,255,255,0.5)", textDecoration: "none", padding: "7px 0", transition: "color 0.2s" }} onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")} onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.5)")}>
                   {item.title}
-                </a>
+                </Link>
               ))}
             </div>
           </div>
@@ -221,16 +217,14 @@ export default function Navbar() {
           <button onClick={() => setMobileOpen(false)} style={{ position: "absolute", top: 20, right: 24, background: "none", border: "none", color: "#fff", fontSize: 28, cursor: "pointer" }}>✕</button>
           <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
             {[
-              { label: "How It Works", href: "#how-it-works" },
-              { label: "What We Test", href: "#biomarkers" },
-              { label: "Reviews", href: "#reviews" },
-              { label: "Pricing", href: "#pricing" },
-              { label: "FAQs", href: "#faq" },
-              { label: "For Teams", href: "#membership" },
+              { label: "How It Works", href: "/how-it-works" },
+              { label: "What We Test", href: "/biomarkers" },
+              { label: "Reviews", href: "/reviews" },
+              { label: "FAQs", href: "/faq" },
             ].map(({ label, href }) => (
-              <a key={label} href={href} onClick={() => setMobileOpen(false)} style={{ color: "#fff", fontSize: 22, fontWeight: 700, textDecoration: "none", padding: "14px 0", borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
+              <Link key={label} to={href} onClick={() => setMobileOpen(false)} style={{ color: "#fff", fontSize: 22, fontWeight: 700, textDecoration: "none", padding: "14px 0", borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
                 {label}
-              </a>
+              </Link>
             ))}
             <div style={{ marginTop: 32, display: "flex", flexDirection: "column", gap: 12 }}>
               <Link to="/auth" className="btn-outline" style={{ textAlign: "center" }} onClick={() => setMobileOpen(false)}>Login</Link>

@@ -25,7 +25,7 @@ function CountUp({ target, suffix = "", prefix = "" }: { target: number; suffix?
         return () => observer.disconnect();
     }, [target]);
 
-    return <div ref={ref} className="stat-number gradient-text">{prefix}{count}{suffix}</div>;
+    return <div ref={ref} className="stat-number" style={{ color: "#fff", textShadow: "0 2px 10px rgba(0,0,0,0.5)" }}>{prefix}{count}{suffix}</div>;
 }
 
 const stats = [
@@ -36,22 +36,32 @@ const stats = [
 
 export default function Stats() {
     return (
-        <section style={{ position: "relative", zIndex: 1, background: "transparent", padding: "120px 0" }}>
+        <section id="stats-section" style={{ position: "relative", zIndex: 10, background: "transparent", padding: "160px 0", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
             <div className="container">
-                <div style={{ textAlign: "center", marginBottom: 80 }}>
-                    <p className="label fade-up" style={{ color: "rgba(255,255,255,0.4)", marginBottom: 12 }}>Data-driven results</p>
-                    <h2 className="display-md fade-up" style={{ color: "#fff", transitionDelay: "0.1s" }}>
+                <div style={{ textAlign: "center", marginBottom: 100 }}>
+                    <p className="label fade-up" style={{ color: "rgba(255,255,255,0.4)", marginBottom: 16, fontSize: "14px", letterSpacing: "0.2em" }}>Data-driven results</p>
+                    <h2 className="display-md fade-up" style={{ color: "#fff", transitionDelay: "0.1s", fontSize: "24px", fontWeight: 500 }}>
                         The numbers speak for themselves
                     </h2>
                 </div>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 2 }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 0 }}>
                     {stats.map((s, i) => (
-                        <div key={i} style={{
-                            padding: "60px 40px", textAlign: "center",
-                            borderRight: i < stats.length - 1 ? "1px solid rgba(255,255,255,0.06)" : "none",
+                        <div key={i} className="fade-up" style={{
+                            padding: "40px 20px", textAlign: "center",
+                            borderRight: i < stats.length - 1 ? "1px solid rgba(255,255,255,0.1)" : "none",
+                            transitionDelay: `${0.2 + i * 0.1}s`
                         }}>
                             <CountUp target={s.val} suffix={s.suffix} />
-                            <p style={{ color: "rgba(255,255,255,0.55)", fontSize: 15, marginTop: 16, maxWidth: 200, margin: "16px auto 0" }}>{s.label}</p>
+                            <p style={{ 
+                                color: "rgba(255,255,255,0.5)", 
+                                fontSize: "16px", 
+                                marginTop: 24, 
+                                maxWidth: "240px", 
+                                margin: "24px auto 0",
+                                lineHeight: "1.5"
+                            }}>
+                                {s.label}
+                            </p>
                         </div>
                     ))}
                 </div>

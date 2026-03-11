@@ -34,6 +34,14 @@ import AdminAnalytics from "./pages/admin/AdminAnalytics";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminCenters from "./pages/admin/AdminCenters";
 import AdminSettings from "./pages/admin/AdminSettings";
+import HowItWorks from "./pages/HowItWorks";
+import Biomarkers from "./pages/Biomarkers";
+import Reviews from "./pages/Reviews";
+import FAQPage from "./pages/FAQPage";
+import Manifesto from "./pages/Manifesto";
+import Blog from "./pages/Blog";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsConditions from "./pages/TermsConditions";
 
 const queryClient = new QueryClient();
 
@@ -47,6 +55,14 @@ const App = () => (
           <ScrollToTop />
           <Routes>
             <Route path="/" element={<LandingPage />} />
+            <Route path="/how-it-works" element={<HowItWorks />} />
+            <Route path="/biomarkers" element={<Biomarkers />} />
+            <Route path="/reviews" element={<Reviews />} />
+            <Route path="/faq" element={<FAQPage />} />
+            <Route path="/manifesto" element={<Manifesto />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/legal/privacy" element={<PrivacyPolicy />} />
+            <Route path="/legal/terms" element={<TermsConditions />} />
             <Route path="/auth" element={<AuthGateway />} />
             <Route path="/auth/user" element={<AuthUser />} />
             <Route path="/auth/center" element={<AuthCenter />} />

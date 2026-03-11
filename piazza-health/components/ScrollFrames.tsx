@@ -11,40 +11,46 @@ export default function ScrollFrames() {
     const frameCount = 40;
 
     useEffect(() => {
-        // Preload all frames
         const loadedImages: HTMLImageElement[] = [];
         let loadedCount = 0;
 
         for (let i = 1; i <= frameCount; i++) {
             const img = new window.Image();
-            // Format number to 3 digits, e.g., 001, 002...
             const frameNumber = i.toString().padStart(3, "0");
             img.src = `/imgframes/ezgif-frame-${frameNumber}.jpg`;
             img.onload = () => {
                 loadedCount++;
+                if (i === 1) setLoaded(true); // Show as soon as first frame is ready
                 if (loadedCount === frameCount) {
                     setImages(loadedImages);
-                    setLoaded(true);
                 }
+            };
+            img.onerror = () => {
+                loadedCount++; // Still count it to avoid blocking
+                if (loadedCount === frameCount) setImages(loadedImages);
             };
             loadedImages.push(img);
         }
+        setImages(loadedImages);
     }, [frameCount]);
 
     useEffect(() => {
-        if (!loaded || images.length === 0 || !canvasRef.current) return;
+        if (images.length === 0 || !canvasRef.current) return;
 
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
         if (!ctx) return;
 
-        // Configuration
-        // Define scrollRange dynamically (end frames right before HowItWorks section)
-        // Which spans Hero + MedicalBoard + Dashboard + Stats (approx 4.2 * window.innerHeight)
-        const getScrollRange = () => window.innerHeight * 4.2;
+        const getScrollRange = () => {
+            const statsSection = document.getElementById("stats-section");
+            if (statsSection) {
+                return statsSection.offsetTop;
+            }
+            return window.innerHeight * 4;
+        };
 
-        // Initial Draw
         const drawImage = (img: HTMLImageElement) => {
+            if (!canvas || !img || !img.complete) return;
             const windowRatio = window.innerWidth / window.innerHeight;
             const imgRatio = img.width / img.height;
 
@@ -68,41 +74,30 @@ export default function ScrollFrames() {
         const updateCanvasSize = () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            // Redraw current frame
-            const scrollFraction = Math.min(Math.max(window.scrollY / getScrollRange(), 0), 1);
-            const frameIndex = Math.min(
-                frameCount - 1,
-                Math.floor(scrollFraction * frameCount)
-            );
-            drawImage(images[frameIndex]);
+            const scrollRange = getScrollRange();
+            const scrollFraction = Math.min(Math.max(window.scrollY / scrollRange, 0), 1);
+            const frameIndex = Math.min(frameCount - 1, Math.floor(scrollFraction * (frameCount - 1)));
+            if (images[frameIndex]) drawImage(images[frameIndex]);
         };
 
         const handleScroll = () => {
-            // How far down the page have we scrolled as a fraction of our intended range?
-            const scrollFraction = Math.min(Math.max(window.scrollY / getScrollRange(), 0), 1);
-
-            // Calculate which frame corresponds to that fraction
-            const frameIndex = Math.min(
-                frameCount - 1,
-                Math.floor(scrollFraction * frameCount)
-            );
-
+            const scrollRange = getScrollRange();
+            const scrollFraction = Math.min(Math.max(window.scrollY / scrollRange, 0), 1);
+            const frameIndex = Math.min(frameCount - 1, Math.floor(scrollFraction * (frameCount - 1)));
             requestAnimationFrame(() => {
-                drawImage(images[frameIndex]);
+                if (images[frameIndex]) drawImage(images[frameIndex]);
             });
         };
 
         window.addEventListener("resize", updateCanvasSize);
         window.addEventListener("scroll", handleScroll, { passive: true });
-
-        // Initial setup
         updateCanvasSize();
 
         return () => {
             window.removeEventListener("resize", updateCanvasSize);
             window.removeEventListener("scroll", handleScroll);
         };
-    }, [loaded, images]);
+    }, [images]);
 
     return (
         <canvas
@@ -114,11 +109,11 @@ export default function ScrollFrames() {
                 width: "100%",
                 height: "100%",
                 objectFit: "cover",
-                zIndex: 0,
+                zIndex: 1, // Above body background
                 pointerEvents: "none",
-                opacity: loaded ? 0.35 : 0, // Lower opacity so text is readable
-                transition: "opacity 1s ease-in-out",
-                filter: "brightness(0.8) contrast(1.2)"
+                opacity: loaded ? 1 : 0,
+                transition: "opacity 1.5s ease-in-out",
+                background: "#000"
             }}
         />
     );

@@ -10,12 +10,12 @@ const logos = ["AIIMS", "PGI", "CMC Vellore", "Tata Memorial", "Apollo", "Fortis
 
 export default function MedicalBoard() {
     return (
-        <section id="team" style={{ position: "relative", zIndex: 1, background: "transparent", padding: "100px 0" }}>
+        <section id="team" style={{ position: "relative", zIndex: 10, background: "transparent", padding: "100px 0" }}>
             <div className="container">
                 {/* Scrolling logo ticker */}
                 <div style={{ overflow: "hidden", marginBottom: 80, position: "relative" }}>
-                    <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 80, background: "linear-gradient(to right,#000,transparent)", zIndex: 2 }} />
-                    <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: 80, background: "linear-gradient(to left,#000,transparent)", zIndex: 2 }} />
+                    <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 80, background: "linear-gradient(to right,transparent,transparent)", zIndex: 2 }} />
+                    <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: 80, background: "linear-gradient(to left,transparent,transparent)", zIndex: 2 }} />
                     <div className="ticker-track" style={{ display: "flex", gap: 64, alignItems: "center" }}>
                         {[...logos, ...logos].map((l, i) => (
                             <span key={i} style={{ fontSize: 16, fontWeight: 700, color: "rgba(255,255,255,0.3)", whiteSpace: "nowrap", letterSpacing: "0.05em", textTransform: "uppercase" }}>{l}</span>

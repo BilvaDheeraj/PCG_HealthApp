@@ -15,30 +15,46 @@ import ScrollFrames from "@/components/landing/ScrollFrames";
 
 export default function LandingPage() {
   useEffect(() => {
+    let lenisInstance: any = null;
+    let rafId: number | null = null;
+
     const initLenis = async () => {
       try {
         const Lenis = (await import("lenis")).default;
-        const lenis = new Lenis({
+        lenisInstance = new Lenis({
           duration: 1.4,
           easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         });
+
         const raf = (time: number) => {
-          lenis.raf(time);
-          requestAnimationFrame(raf);
+          lenisInstance.raf(time);
+          rafId = requestAnimationFrame(raf);
         };
-        requestAnimationFrame(raf);
-      } catch {
-        // lenis optional
+        rafId = requestAnimationFrame(raf);
+      } catch (err) {
+        console.error("Lenis init failed:", err);
       }
     };
     initLenis();
 
     const observer = new IntersectionObserver(
-      (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("visible"); }),
+      (entries) =>
+        entries.forEach((e) => {
+          if (e.isIntersecting) e.target.classList.add("visible");
+        }),
       { threshold: 0.15 }
     );
     document.querySelectorAll(".fade-up, .fade-in").forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+
+    return () => {
+      if (lenisInstance) {
+        lenisInstance.destroy();
+      }
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+      }
+      observer.disconnect();
+    };
   }, []);
 
   return (
