@@ -23,8 +23,10 @@ export default function UserAuthPage() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        router.push("/dashboard");
+        // Simulate authentication
+        router.push("/patient");
     };
+
 
     return (
         <div style={{ display: "flex", minHeight: "100vh", backgroundColor: "#050508", fontFamily: "Inter, sans-serif" }}>

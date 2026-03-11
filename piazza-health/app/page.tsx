@@ -3,8 +3,9 @@ import { useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Features from "@/components/Features";
-import Dashboard from "@/components/Dashboard";
 import Stats from "@/components/Stats";
+
+
 import HowItWorks from "@/components/HowItWorks";
 import Reviews from "@/components/Reviews";
 import Membership from "@/components/Membership";
@@ -41,8 +42,8 @@ export default function Home() {
       <Navbar />
       <Hero />
       <MedicalBoard />
-      <Dashboard />
       <Stats />
+
       <HowItWorks />
       <Reviews />
       <Membership />

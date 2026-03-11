@@ -1,209 +1,286 @@
 "use client";
 
+import { StatCard } from "@/components/dashboard/StatCard";
+import { motion } from "framer-motion";
 import {
-    Users, FileText, Brain, Activity, ArrowUpRight, AlertTriangle,
-    Building2, Shield, Server, CheckCircle2
+  Users, FileText, AlertTriangle, Building2, Shield, CheckCircle,
+  XCircle, Eye, MoreHorizontal
 } from "lucide-react";
 import {
-    BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
-    AreaChart, Area, ResponsiveContainer
+  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  BarChart, Bar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar
 } from "recharts";
-import Link from "next/link";
 
-const reportData = [
-    { name: "Mon", reports: 120 }, { name: "Tue", reports: 145 },
-    { name: "Wed", reports: 190 }, { name: "Thu", reports: 165 },
-    { name: "Fri", reports: 210 }, { name: "Sat", reports: 85  }, { name: "Sun", reports: 65 },
-];
-const anomalyData = [
-    { t: "00:00", v: 2 }, { t: "04:00", v: 1 }, { t: "08:00", v: 5 },
-    { t: "12:00", v: 12 }, { t: "16:00", v: 8 }, { t: "20:00", v: 4 },
+const userGrowth = [
+  { month: "Jan", users: 1200 },
+  { month: "Feb", users: 1850 },
+  { month: "Mar", users: 2400 },
+  { month: "Apr", users: 3100 },
+  { month: "May", users: 4200 },
+  { month: "Jun", users: 5800 },
 ];
 
-const kpis = [
-    { label: "Total Users",         value: "8,941",  trend: "+4.2%", icon: Users,      color: "text-blue-400",    bg: "bg-blue-500/10",    border: "border-blue-500/20" },
-    { label: "Reports Processed",   value: "14,592", trend: "+12.5%",icon: FileText,   color: "text-purple-400",  bg: "bg-purple-500/10",  border: "border-purple-500/20" },
-    { label: "Abnormal Reports",    value: "1,204",  trend: "+3.1%", icon: AlertTriangle,color:"text-amber-400", bg: "bg-amber-500/10",   border: "border-amber-500/20" },
-    { label: "Active Centers",      value: "47",     trend: "+8",    icon: Building2,  color: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/20" },
+const deficiencyData = [
+  { name: "Vit D", count: 42 },
+  { name: "Iron", count: 35 },
+  { name: "B12", count: 28 },
+  { name: "Calcium", count: 18 },
+  { name: "Folate", count: 12 },
 ];
 
-const flagged = [
-    { id: "R-9104", name: "Unknown Patient", center: "Lab XYZ",         score: 22, reason: "No NABL header detected; logo appears digitally inserted" },
-    { id: "R-9087", name: "Ramesh Kumar",    center: "HealthCare Plus",  score: 35, reason: "OCR confidence 34% — low-quality scan, blurred text" },
-    { id: "R-9065", name: "Seema Shah",      center: "QuickPath Labs",   score: 48, reason: "Metadata timestamp mismatch: file created 2 months before report date" },
+const healthTrends = [
+  { subject: "Diabetes Risk", A: 65 },
+  { subject: "Heart Risk", A: 42 },
+  { subject: "Vit Deficiency", A: 78 },
+  { subject: "Anemia", A: 35 },
+  { subject: "Thyroid", A: 28 },
+  { subject: "Liver", A: 20 },
 ];
 
-const systems = [
-    { name: "Vision Extractor (OCR)",  status: "Operational", ok: true },
-    { name: "Clinical LLM Core",        status: "High Load (85%)", ok: false },
-    { name: "Embedding Vector DB",      status: "Operational", ok: true },
-    { name: "Audit Log Service",        status: "Operational", ok: true },
+const flaggedReports = [
+  { id: "R-2048", patient: "Rahul Mehra", lab: "LifeCare Labs", issue: "Low confidence OCR", score: 62, status: "review" },
+  { id: "R-2051", patient: "Kavita Rao", lab: "Apollo Diagnostics", issue: "Template mismatch", score: 45, status: "flagged" },
+  { id: "R-2053", patient: "Deepak Jain", lab: "SRL Labs", issue: "Missing metadata", score: 71, status: "review" },
+  { id: "R-2055", patient: "Sneha Pillai", lab: "Thyrocare", issue: "Value anomaly", score: 55, status: "flagged" },
 ];
 
-export default function AdminDashboard() {
+const recentUsers = [
+  { name: "Dr. Ananya Verma", role: "Doctor", status: "active", joined: "2 days ago" },
+  { name: "MedLab Chennai", role: "Diagnostic Center", status: "pending", joined: "5 hours ago" },
+  { name: "Arjun Reddy", role: "Patient", status: "active", joined: "1 day ago" },
+  { name: "HealthFirst Labs", role: "Diagnostic Center", status: "active", joined: "3 days ago" },
+];
+
+const statusStyles: Record<string, string> = {
+  review: "bg-health-yellow/10 text-health-yellow",
+  flagged: "bg-health-red/10 text-health-red",
+  approved: "bg-health-green/10 text-health-green",
+  active: "bg-health-green/10 text-health-green",
+  pending: "bg-health-yellow/10 text-health-yellow",
+};
+
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
     return (
-        <div className="w-full space-y-6 pb-6">
-
-            {/* Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div>
-                    <h2 className="text-2xl font-black text-white tracking-tight flex items-center gap-3">
-                        Command Center
-                        <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-bold text-emerald-400">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> Live
-                        </span>
-                    </h2>
-                    <p className="text-slate-400 text-sm mt-1">Platform-wide oversight and AI engine governance.</p>
-                </div>
-                <div className="flex gap-2 shrink-0">
-                    <button className="px-4 py-2 bg-slate-900 border border-slate-800 text-white text-xs font-bold rounded-xl transition-all flex items-center gap-2 hover:border-slate-700">
-                        <Server size={13} className="text-slate-400" /> Infrastructure
-                    </button>
-                    <button className="px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold rounded-xl shadow-lg shadow-purple-500/20 transition-all flex items-center gap-2 hover:-translate-y-0.5">
-                        <Activity size={13} /> Engine Logs
-                    </button>
-                </div>
-            </div>
-
-            {/* KPI Cards */}
-            <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
-                {kpis.map((k, i) => (
-                    <div key={i} className={`rounded-2xl bg-slate-900 border ${k.border} p-5 relative overflow-hidden hover:border-opacity-60 transition-all`}>
-                        <div className={`absolute -right-6 -top-6 w-20 h-20 rounded-full ${k.bg} blur-xl`} />
-                        <div className="relative z-10">
-                            <div className={`p-2 rounded-xl ${k.bg} border ${k.border} w-fit mb-3`}>
-                                <k.icon className={`w-4 h-4 ${k.color}`} />
-                            </div>
-                            <p className="text-xs font-medium text-slate-400 mb-1">{k.label}</p>
-                            <p className="text-2xl font-black text-white">{k.value}</p>
-                            <p className="text-[10px] text-emerald-400 font-bold mt-1">{k.trend}</p>
-                        </div>
-                    </div>
-                ))}
-            </div>
-
-            {/* Charts Row */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-
-                {/* Processing Volume */}
-                <div className="lg:col-span-2 rounded-2xl bg-slate-900 border border-slate-800 p-5 hover:border-slate-700 transition-colors">
-                    <div className="flex items-center justify-between mb-4">
-                        <div>
-                            <h3 className="text-sm font-bold text-white">Processing Volume</h3>
-                            <p className="text-xs text-slate-500 mt-0.5">Reports through AI pipeline this week</p>
-                        </div>
-                        <select className="bg-slate-950 border border-slate-800 text-xs font-bold text-slate-300 rounded-lg px-2 py-1.5 outline-none">
-                            <option>This Week</option><option>This Month</option>
-                        </select>
-                    </div>
-                    <div className="h-[220px] w-full">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <BarChart data={reportData} margin={{ top: 2, right: 4, left: -20, bottom: 0 }}>
-                                <defs>
-                                    <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="0%" stopColor="#8b5cf6" stopOpacity={1} />
-                                        <stop offset="100%" stopColor="#3b82f6" stopOpacity={0.8} />
-                                    </linearGradient>
-                                </defs>
-                                <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
-                                <XAxis dataKey="name" stroke="#64748b" fontSize={11} tickLine={false} axisLine={false} />
-                                <YAxis stroke="#64748b" fontSize={11} tickLine={false} axisLine={false} />
-                                <Tooltip contentStyle={{ backgroundColor:"#020617", borderColor:"#1e293b", borderRadius:"10px", fontSize:"11px" }} />
-                                <Bar dataKey="reports" fill="url(#barGrad)" radius={[5, 5, 0, 0]} barSize={32} />
-                            </BarChart>
-                        </ResponsiveContainer>
-                    </div>
-                </div>
-
-                {/* Right column */}
-                <div className="space-y-4">
-
-                    {/* Anomaly Detection */}
-                    <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 hover:border-purple-500/30 transition-colors">
-                        <div className="flex items-center justify-between mb-3">
-                            <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                                <div className="p-1.5 rounded-lg bg-purple-500/15 border border-purple-500/25">
-                                    <Brain className="w-3.5 h-3.5 text-purple-400" />
-                                </div>
-                                Anomaly Detection
-                            </h3>
-                            <span className="text-[10px] font-black text-rose-400 bg-rose-500/10 border border-rose-500/20 px-2 py-0.5 rounded flex items-center gap-1.5">
-                                <span className="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse" /> Active
-                            </span>
-                        </div>
-                        <div className="h-24 w-full mb-3">
-                            <ResponsiveContainer width="100%" height="100%">
-                                <AreaChart data={anomalyData} margin={{ top: 2, right: 0, left: -20, bottom: 0 }}>
-                                    <defs>
-                                        <linearGradient id="aGrad" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="5%" stopColor="#a855f7" stopOpacity={0.4} />
-                                            <stop offset="95%" stopColor="#a855f7" stopOpacity={0} />
-                                        </linearGradient>
-                                    </defs>
-                                    <Area type="monotone" dataKey="v" stroke="#a855f7" strokeWidth={2} fillOpacity={1} fill="url(#aGrad)" />
-                                </AreaChart>
-                            </ResponsiveContainer>
-                        </div>
-                        <div className="p-2.5 rounded-xl bg-slate-950 border border-purple-500/15 text-xs text-slate-300 flex gap-2 items-start">
-                            <AlertTriangle className="w-3.5 h-3.5 text-purple-400 shrink-0 mt-0.5" />
-                            <p className="leading-relaxed text-[11px]">Spike in OCR failures from Center #42. Failover to secondary LLM active.</p>
-                        </div>
-                    </div>
-
-                    {/* Core Systems */}
-                    <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 hover:border-slate-700 transition-colors">
-                        <h3 className="text-sm font-bold text-white flex items-center gap-2 mb-3">
-                            <div className="p-1.5 rounded-lg bg-emerald-500/15 border border-emerald-500/25">
-                                <Activity className="w-3.5 h-3.5 text-emerald-400" />
-                            </div>
-                            Core Systems
-                        </h3>
-                        <div className="space-y-2">
-                            {systems.map((s, i) => (
-                                <div key={i} className="flex items-center justify-between p-2.5 rounded-xl bg-slate-950 border border-slate-800 hover:border-slate-700 transition-all gap-2">
-                                    <span className="text-xs font-bold text-slate-200 truncate flex-1 min-w-0 pr-2">{s.name}</span>
-                                    <div className="flex items-center gap-2 shrink-0">
-                                        <span className={`text-[10px] font-bold whitespace-nowrap ${s.ok ? "text-emerald-400" : "text-amber-400"}`}>{s.status}</span>
-                                        <span className={`w-2 h-2 rounded-full ${s.ok ? "bg-emerald-500" : "bg-amber-500"}`} />
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Flagged Reports */}
-            <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 hover:border-slate-700 transition-colors">
-                <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                        <div className="p-1.5 rounded-lg bg-rose-500/15 border border-rose-500/25"><Shield className="w-4 h-4 text-rose-400" /></div>
-                        Flagged Reports (Authenticity Issues)
-                    </h3>
-                    <Link href="/admin/reports" className="text-xs text-purple-400 hover:text-purple-300 font-bold flex items-center gap-1 transition-colors">
-                        Full Review <ArrowUpRight size={13} />
-                    </Link>
-                </div>
-                <div className="space-y-3">
-                    {flagged.map((r) => (
-                        <div key={r.id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-xl bg-slate-950 border border-slate-800 hover:border-rose-500/20 transition-all">
-                            <div className="flex items-center gap-3">
-                                <div className="w-9 h-9 rounded-lg bg-rose-500/10 border border-rose-500/20 flex items-center justify-center shrink-0">
-                                    <AlertTriangle className="w-4 h-4 text-rose-400" />
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                    <p className="text-sm font-bold text-white truncate">{r.name}</p>
-                                    <p className="text-xs text-slate-400 truncate">{r.id} · {r.center}</p>
-                                </div>
-                            </div>
-                            <div className="text-left sm:text-right shrink-0">
-                                <span className="text-[10px] font-bold text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded block sm:inline">Auth Score: {r.score}/100</span>
-                                <p className="text-[10px] text-slate-500 mt-1 sm:max-w-[220px] line-clamp-2" title={r.reason}>{r.reason}</p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </div>
+      <div className="glass-card p-3 text-xs">
+        <p className="text-foreground font-semibold">{label}</p>
+        <p className="text-admin">{payload[0].value.toLocaleString()}</p>
+      </div>
     );
-}
+  }
+  return null;
+};
+
+const AdminDashboard = () => {
+  return (
+    <div className="max-w-7xl mx-auto space-y-6">
+      {/* Stats */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <StatCard
+          title="Total Users"
+          value="5,842"
+          icon={<Users className="w-5 h-5 text-primary-foreground" />}
+          trend={{ value: "23%", positive: true }}
+          accentClass="gradient-admin"
+          delay={0}
+        />
+        <StatCard
+          title="Reports Processed"
+          value="18,294"
+          icon={<FileText className="w-5 h-5 text-primary-foreground" />}
+          trend={{ value: "1,200 this week", positive: true }}
+          accentClass="gradient-admin"
+          delay={0.1}
+        />
+        <StatCard
+          title="Flagged Reports"
+          value="47"
+          icon={<AlertTriangle className="w-5 h-5 text-primary-foreground" />}
+          subtitle="12 need urgent review"
+          accentClass="gradient-admin"
+          delay={0.2}
+        />
+        <StatCard
+          title="Active Centers"
+          value="134"
+          icon={<Building2 className="w-5 h-5 text-primary-foreground" />}
+          trend={{ value: "8 new", positive: true }}
+          accentClass="gradient-admin"
+          delay={0.3}
+        />
+      </div>
+
+      {/* Charts Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        {/* User Growth */}
+        <motion.div
+          className="glass-card p-5 lg:col-span-2"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">User Growth</h3>
+          <div style={{ height: 220, width: "100%" }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={userGrowth}>
+                <defs>
+                  <linearGradient id="adminGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="hsl(270, 70%, 60%)" stopOpacity={0.3} />
+                    <stop offset="100%" stopColor="hsl(270, 70%, 60%)" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(220, 14%, 18%)" />
+                <XAxis dataKey="month" tick={{ fill: "hsl(215, 15%, 55%)", fontSize: 11 }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fill: "hsl(215, 15%, 55%)", fontSize: 11 }} axisLine={false} tickLine={false} />
+                <Tooltip content={<CustomTooltip />} />
+                <Area type="monotone" dataKey="users" stroke="hsl(270, 70%, 60%)" strokeWidth={2} fill="url(#adminGrad)" />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </motion.div>
+
+        {/* Population Health Radar */}
+        <motion.div
+          className="glass-card p-5"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+        >
+          <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">Population Risk</h3>
+          <div style={{ height: 220, width: "100%" }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <RadarChart data={healthTrends}>
+                <PolarGrid stroke="hsl(220, 14%, 18%)" />
+                <PolarAngleAxis dataKey="subject" tick={{ fill: "hsl(215, 15%, 55%)", fontSize: 9 }} />
+                <PolarRadiusAxis tick={false} axisLine={false} />
+                <Radar name="Risk %" dataKey="A" stroke="hsl(270, 70%, 60%)" fill="hsl(270, 70%, 60%)" fillOpacity={0.2} />
+              </RadarChart>
+            </ResponsiveContainer>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Flagged Reports + Deficiency Chart */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <motion.div
+          className="glass-card p-5 lg:col-span-2"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+        >
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <Shield className="w-4 h-4 text-admin" />
+              <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Report Authenticity Review</h3>
+            </div>
+          </div>
+          <div className="space-y-3">
+            {flaggedReports.map((report, i) => (
+              <motion.div
+                key={report.id}
+                className="flex items-center justify-between p-3 rounded-lg bg-secondary/30 border border-border/50 hover:border-admin/20 transition-all"
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.6 + i * 0.08 }}
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-lg bg-admin/10 flex items-center justify-center">
+                    <span className="text-xs font-bold text-admin">{report.score}%</span>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-foreground">{report.patient}</p>
+                    <p className="text-xs text-muted-foreground">{report.lab} · {report.issue}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className={`text-xs px-2 py-1 rounded-full font-medium ${statusStyles[report.status]}`}>
+                    {report.status}
+                  </span>
+                  <button className="p-1.5 rounded-lg hover:bg-health-green/10 transition-colors">
+                    <CheckCircle className="w-4 h-4 text-health-green" />
+                  </button>
+                  <button className="p-1.5 rounded-lg hover:bg-health-red/10 transition-colors">
+                    <XCircle className="w-4 h-4 text-health-red" />
+                  </button>
+                  <button className="p-1.5 rounded-lg hover:bg-secondary transition-colors">
+                    <Eye className="w-4 h-4 text-muted-foreground" />
+                  </button>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Common Deficiencies */}
+        <motion.div
+          className="glass-card p-5"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+        >
+          <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">Top Deficiencies</h3>
+          <div style={{ height: 220, width: "100%" }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={deficiencyData} layout="vertical">
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(220, 14%, 18%)" />
+                <XAxis type="number" tick={{ fill: "hsl(215, 15%, 55%)", fontSize: 11 }} axisLine={false} tickLine={false} />
+                <YAxis dataKey="name" type="category" tick={{ fill: "hsl(215, 15%, 55%)", fontSize: 11 }} axisLine={false} tickLine={false} width={50} />
+                <Bar dataKey="count" fill="hsl(270, 70%, 60%)" radius={[0, 4, 4, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* User Management */}
+      <motion.div
+        className="glass-card p-5"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.7 }}
+      >
+        <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">Recent Users</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border">
+                <th className="text-left py-2 text-xs text-muted-foreground font-medium">Name</th>
+                <th className="text-left py-2 text-xs text-muted-foreground font-medium">Role</th>
+                <th className="text-left py-2 text-xs text-muted-foreground font-medium">Status</th>
+                <th className="text-left py-2 text-xs text-muted-foreground font-medium">Joined</th>
+                <th className="text-right py-2 text-xs text-muted-foreground font-medium">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {recentUsers.map((user, i) => (
+                <motion.tr
+                  key={i}
+                  className="border-b border-border/50 hover:bg-secondary/30 transition-colors"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.8 + i * 0.05 }}
+                >
+                  <td className="py-3 text-foreground font-medium">{user.name}</td>
+                  <td className="py-3 text-muted-foreground">{user.role}</td>
+                  <td className="py-3">
+                    <span className={`text-xs px-2 py-1 rounded-full font-medium ${statusStyles[user.status]}`}>
+                      {user.status}
+                    </span>
+                  </td>
+                  <td className="py-3 text-muted-foreground">{user.joined}</td>
+                  <td className="py-3 text-right">
+                    <button className="p-1 rounded hover:bg-secondary transition-colors">
+                      <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
+                    </button>
+                  </td>
+                </motion.tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
+export default AdminDashboard;

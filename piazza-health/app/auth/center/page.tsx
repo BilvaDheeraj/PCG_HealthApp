@@ -22,8 +22,10 @@ export default function CenterAuthPage() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        router.push("/center");
+        // Simulate authentication
+        router.push("/diagnostic");
     };
+
 
     const inputStyle: React.CSSProperties = {
         width: "100%", boxSizing: "border-box",

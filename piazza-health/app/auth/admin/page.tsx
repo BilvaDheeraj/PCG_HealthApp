@@ -20,6 +20,7 @@ export default function AdminAuthPage() {
         else router.push("/admin");
     };
 
+
     const inputStyle: React.CSSProperties = {
         width: "100%", boxSizing: "border-box",
         background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.09)",
