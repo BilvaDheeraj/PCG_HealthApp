@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "C:\Users\Bilva Dheeraj\Documents\CORPORATE\health-navigator-main\backend\test_pinecone.py", line 5, in <module>
+    from app.services.pinecone_service import pc
+  File "C:\Users\Bilva Dheeraj\Documents\CORPORATE\health-navigator-main\backend\app\services\pinecone_service.py", line 1, in <module>
+    from pinecone import Pinecone, ServerlessSpec
+  File "C:\Users\Bilva Dheeraj\Documents\CORPORATE\health-navigator-main\backend\venv\Lib\site-packages\pinecone\__init__.py", line 5, in <module>
+    raise Exception(
+        "The official Pinecone python package has been renamed from `pinecone-client` to `pinecone`. Please remove `pinecone-client` from your project dependencies and add `pinecone` instead. See the README at https://github.com/pinecone-io/pinecone-python-client for more information on using the python SDK."
+    )
+Exception: The official Pinecone python package has been renamed from `pinecone-client` to `pinecone`. Please remove `pinecone-client` from your project dependencies and add `pinecone` instead. See the README at https://github.com/pinecone-io/pinecone-python-client for more information on using the python SDK.

@@ -1,0 +1,16 @@
+src\components\landing\Biomarkers.tsx
+src\components\landing\Features.tsx
+src\components\landing\Footer.tsx
+src\components\landing\Hero.tsx
+src\components\landing\HowItWorks.tsx
+src\components\landing\Membership.tsx
+src\components\landing\Navbar.tsx
+src\components\landing\Pricing.tsx
+src\components\landing\Reviews.tsx
+src\pages\AuthUser.tsx
+src\pages\Biomarkers.tsx
+src\pages\Blog.tsx
+src\pages\HowItWorks.tsx
+src\pages\Index.tsx
+src\pages\Reviews.tsx
+src\pages\admin\AdminCenters.tsx

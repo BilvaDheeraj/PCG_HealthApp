@@ -1,0 +1,526 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 220 20% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 20% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 20% 10%;
+
+    --primary: 25 95% 53%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 14% 93%;
+    --secondary-foreground: 220 20% 25%;
+
+    --muted: 220 14% 95%;
+    --muted-foreground: 215 15% 45%;
+
+    --accent: 25 95% 53%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 14% 88%;
+    --input: 220 14% 88%;
+    --ring: 25 95% 53%;
+
+    --radius: 0.75rem;
+
+    /* Role-specific accent colors */
+    --patient-accent: 25 95% 53%;
+    --patient-glow: 25 100% 60%;
+    --diagnostic-accent: 217 91% 60%;
+    --diagnostic-glow: 217 100% 70%;
+    --admin-accent: 270 70% 60%;
+    --admin-glow: 270 80% 70%;
+
+    /* Health status colors */
+    --health-green: 142 71% 45%;
+    --health-yellow: 45 93% 47%;
+    --health-red: 0 72% 51%;
+    --health-blue: 217 91% 60%;
+
+    /* Gradients as CSS custom properties */
+    --gradient-patient: linear-gradient(135deg, hsl(25 95% 53%), hsl(35 100% 60%));
+    --gradient-diagnostic: linear-gradient(135deg, hsl(217 91% 60%), hsl(200 100% 65%));
+    --gradient-admin: linear-gradient(135deg, hsl(270 70% 60%), hsl(290 80% 65%));
+    --gradient-dark: linear-gradient(180deg, hsl(0 0% 97%), hsl(0 0% 94%));
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(220 14% 97%));
+    --gradient-glow-orange: radial-gradient(ellipse at top, hsl(25 95% 53% / 0.08), transparent 60%);
+    --gradient-glow-blue: radial-gradient(ellipse at top, hsl(217 91% 60% / 0.08), transparent 60%);
+    --gradient-glow-purple: radial-gradient(ellipse at top, hsl(270 70% 60% / 0.08), transparent 60%);
+
+    /* Shadows */
+    --shadow-card: 0 1px 3px 0 hsl(0 0% 0% / 0.06), 0 1px 2px -1px hsl(0 0% 0% / 0.06);
+    --shadow-glow-orange: 0 0 20px -5px hsl(25 95% 53% / 0.15);
+    --shadow-glow-blue: 0 0 20px -5px hsl(217 91% 60% / 0.15);
+    --shadow-glow-purple: 0 0 20px -5px hsl(270 70% 60% / 0.15);
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 220 20% 25%;
+    --sidebar-primary: 25 95% 53%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 14% 95%;
+    --sidebar-accent-foreground: 220 20% 10%;
+    --sidebar-border: 220 14% 90%;
+    --sidebar-ring: 25 95% 53%;
+  }
+
+  .dark {
+    --background: 220 20% 7%;
+    --foreground: 210 20% 95%;
+
+    --card: 220 18% 10%;
+    --card-foreground: 210 20% 95%;
+
+    --popover: 220 18% 10%;
+    --popover-foreground: 210 20% 95%;
+
+    --primary: 25 95% 53%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 16% 16%;
+    --secondary-foreground: 210 20% 85%;
+
+    --muted: 220 14% 14%;
+    --muted-foreground: 215 15% 55%;
+
+    --accent: 25 95% 53%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 14% 18%;
+    --input: 220 14% 18%;
+    --ring: 25 95% 53%;
+
+    /* Role-specific accent colors */
+    --patient-accent: 25 95% 53%;
+    --patient-glow: 25 100% 60%;
+    --diagnostic-accent: 217 91% 60%;
+    --diagnostic-glow: 217 100% 70%;
+    --admin-accent: 270 70% 60%;
+    --admin-glow: 270 80% 70%;
+
+    /* Health status colors */
+    --health-green: 142 71% 45%;
+    --health-yellow: 45 93% 47%;
+    --health-red: 0 72% 51%;
+    --health-blue: 217 91% 60%;
+
+    /* Gradients */
+    --gradient-patient: linear-gradient(135deg, hsl(25 95% 53%), hsl(35 100% 60%));
+    --gradient-diagnostic: linear-gradient(135deg, hsl(217 91% 60%), hsl(200 100% 65%));
+    --gradient-admin: linear-gradient(135deg, hsl(270 70% 60%), hsl(290 80% 65%));
+    --gradient-dark: linear-gradient(180deg, hsl(220 20% 9%), hsl(220 20% 5%));
+    --gradient-card: linear-gradient(145deg, hsl(220 18% 12%), hsl(220 18% 8%));
+    --gradient-glow-orange: radial-gradient(ellipse at top, hsl(25 95% 53% / 0.15), transparent 60%);
+    --gradient-glow-blue: radial-gradient(ellipse at top, hsl(217 91% 60% / 0.15), transparent 60%);
+    --gradient-glow-purple: radial-gradient(ellipse at top, hsl(270 70% 60% / 0.15), transparent 60%);
+
+    /* Shadows */
+    --shadow-card: 0 4px 24px -4px hsl(0 0% 0% / 0.4);
+    --shadow-glow-orange: 0 0 30px -5px hsl(25 95% 53% / 0.3);
+    --shadow-glow-blue: 0 0 30px -5px hsl(217 91% 60% / 0.3);
+    --shadow-glow-purple: 0 0 30px -5px hsl(270 70% 60% / 0.3);
+
+    --sidebar-background: 220 20% 6%;
+    --sidebar-foreground: 210 20% 85%;
+    --sidebar-primary: 25 95% 53%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 16% 14%;
+    --sidebar-accent-foreground: 210 20% 95%;
+    --sidebar-border: 220 14% 15%;
+    --sidebar-ring: 25 95% 53%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', 'Inter', sans-serif;
+  }
+}
+
+@layer utilities {
+  .glass-card {
+    @apply bg-card/60 backdrop-blur-xl border border-border/50 rounded-xl;
+    box-shadow: var(--shadow-card);
+  }
+
+  .glass-card-hover {
+    @apply glass-card transition-all duration-300;
+  }
+
+  .glass-card-hover:hover {
+    @apply border-primary/30;
+    box-shadow: var(--shadow-glow-orange);
+  }
+
+  .glow-orange {
+    box-shadow: var(--shadow-glow-orange);
+  }
+
+  .glow-blue {
+    box-shadow: var(--shadow-glow-blue);
+  }
+
+  .glow-purple {
+    box-shadow: var(--shadow-glow-purple);
+  }
+
+  .gradient-patient {
+    background: var(--gradient-patient);
+  }
+
+  .gradient-diagnostic {
+    background: var(--gradient-diagnostic);
+  }
+
+  .gradient-admin {
+    background: var(--gradient-admin);
+  }
+
+  .text-gradient-patient {
+    background: var(--gradient-patient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-diagnostic {
+    background: var(--gradient-diagnostic);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-admin {
+    background: var(--gradient-admin);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .bg-glow-orange {
+    background: var(--gradient-glow-orange);
+  }
+
+  .bg-glow-blue {
+    background: var(--gradient-glow-blue);
+  }
+
+  .bg-glow-purple {
+    background: var(--gradient-glow-purple);
+  }
+
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--border)) transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 3px;
+  }
+}
+
+/* Pulse ring animation */
+@keyframes pulse-ring {
+  0% { transform: scale(0.95); opacity: 0.7; }
+  50% { transform: scale(1.05); opacity: 0.3; }
+  100% { transform: scale(0.95); opacity: 0.7; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 2s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background-size: 200% 100%;
+  animation: shimmer 2s linear infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* ---- Landing page (Piazza Health) variables & styles ---- */
+:root {
+  --accent-orange: #FF5500;
+  --accent-orange-light: #FF8C00;
+  --bg-dark: #000;
+  --bg-dark-2: #0a0a0a;
+  --text-primary-dark: #fff;
+  --text-secondary-dark: rgba(255, 255, 255, 0.55);
+  --border-dark: rgba(255, 255, 255, 0.08);
+  --text-primary-light: #0a0a0a;
+  --text-secondary-light: #666;
+  --border-light: rgba(0, 0, 0, 0.1);
+  --transition-fast: 0.2s ease;
+  --transition-med: 0.35s ease;
+}
+
+/* Landing: scrollbar */
+.landing-page ::-webkit-scrollbar-thumb {
+  background: var(--accent-orange);
+}
+
+/* Landing: utility classes */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.container-wide {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Landing: buttons */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent-orange);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 14px 28px;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+.btn-primary:hover {
+  background: var(--accent-orange-light);
+  transform: scale(1.03);
+}
+.btn-primary .arrow {
+  transition: transform var(--transition-fast);
+}
+.btn-primary:hover .arrow {
+  transform: translateX(4px);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--text-primary-dark);
+  font-size: 15px;
+  font-weight: 600;
+  padding: 13px 27px;
+  border-radius: 100px;
+  border: 1px solid var(--border-dark);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+.btn-outline:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.btn-ghost-dark {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-primary-light);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 1px;
+  transition: gap var(--transition-fast), color var(--transition-fast);
+}
+.btn-ghost-dark:hover {
+  gap: 10px;
+  color: var(--accent-orange);
+}
+
+/* Landing: sections */
+.section-dark {
+  background: var(--bg-dark);
+  color: var(--text-primary-dark);
+}
+.section-dark-2 {
+  background: var(--bg-dark-2);
+  color: var(--text-primary-dark);
+}
+.section-light {
+  background: #f8f8f8;
+  color: var(--text-primary-light);
+}
+.section-light-2 {
+  background: #fff;
+  color: var(--text-primary-light);
+}
+
+/* Landing: animations */
+.fade-up {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.fade-in {
+  opacity: 0;
+  transition: opacity 0.7s ease;
+}
+.fade-in.visible {
+  opacity: 1;
+}
+
+/* Landing: badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 500;
+}
+.badge-dark {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.8);
+  border: 1px solid var(--border-dark);
+}
+.badge-orange {
+  background: rgba(255, 85, 0, 0.15);
+  color: var(--accent-orange);
+  border: 1px solid rgba(255, 85, 0, 0.3);
+}
+.badge-green {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+/* Landing: cards */
+.card-dark {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-dark);
+  border-radius: 20px;
+  padding: 32px;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+.card-dark:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+}
+.card-light {
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+  transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+.card-light:hover {
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+/* Landing: hero & background */
+.hero-gradient {
+  background: radial-gradient(ellipse 100% 80% at 50% 100%, rgba(255, 85, 0, 0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 60% at 80% 20%, rgba(100, 149, 237, 0.08) 0%, transparent 60%),
+    #000000;
+}
+.dots-decoration {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+/* Landing: stat number */
+.stat-number {
+  font-size: clamp(56px, 10vw, 130px);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+/* Landing: ticker */
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.ticker-track {
+  display: flex;
+  animation: ticker 30s linear infinite;
+  width: max-content;
+}
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
+/* Landing: accordion */
+.accordion-item {
+  border-bottom: 1px solid var(--border-light);
+}
+.accordion-header:hover {
+  color: var(--accent-orange);
+}
+.accordion-item.open .accordion-icon {
+  transform: rotate(45deg);
+  background: var(--accent-orange);
+  border-color: var(--accent-orange);
+  color: white;
+}
+
+/* Landing: body typography */
+.body-lg {
+  font-size: clamp(16px, 1.5vw, 20px);
+  line-height: 1.6;
+}
